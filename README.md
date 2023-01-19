@@ -1,2 +1,4 @@
-# adonis-lucid-audit
- Lucid audit plugin for Adonisjs V5
+# 🔖 Adonis5 Audit 
+
+
+Lucid audit plugin for Adonisjs V5
