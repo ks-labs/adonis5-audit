@@ -1,0 +1,198 @@
+{
+	"name": "adonis5-audit",
+	"version": "1.0.0",
+	"description": "Audit provider for AdonisJS 5",
+	"scripts": {
+		"mrm": "mrm --preset=@adonisjs/mrm-preset",
+		"dev": "tsc --watch",
+		"copy:files": "mkdirp ./build/templates && cp -r ./templates/* ./build/templates/",
+		"prepare": "npm run build",
+		"format": "prettier --write .",
+		"version": "npm run build",
+		"run-prettier": "prettier --write .",
+		"typings": "./build/adonis-typings/index.d.ts",
+		"lint": "eslint . --ext=.ts",
+		"pretest": "npm run lint",
+		"test": "node japaFile.js",
+		"clean": "rm -rf build",
+		"compile": "npm run clean && npm run lint && tsc && npm run copy:files",
+		"build": "npm run compile",
+		"prepublishOnly": "npm run build",
+		"commit": "npm run cm",
+		"cm": "cz",
+		"cma": "git add . && cz",
+		"ri": "npm run release",
+		"rici": "release-it --ci",
+		"release": "release-it",
+		"release:patch": "release-it patch",
+		"release:minor": "release-it minor",
+		"release:major": "release-it major",
+		"postinstall": "npx husky init"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ks-labs/adonis5-audit.git"
+	},
+	"keywords": [
+		"Adonis",
+		"5",
+		"adonis-audit"
+	],
+	"author": "KSLabs",
+	"contributors": [
+		"KSLabs <desenvolvimento@ksgestao.com.br>",
+		"vinicioslc <vinicioslc@outlook.com>"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ksgl/adonis5-audit/issues"
+	},
+	"homepage": "https://github.com/ksgl/adonis5-audit#readme",
+	"types": "build/adonis-typings/index.d.ts",
+	"typings": "build/adonis-typings/index.d.ts",
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm audit --production --json | ./node_modules/.bin/npm-audit-html && git add npm-audit.html && doctoc README.md --title='## Table of contents' && git add README.md",
+			"commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js"
+		}
+	},
+	"nyc": {
+		"exclude": [
+			"test"
+		],
+		"extension": [
+			".ts"
+		]
+	},
+	"main": "build/index.js",
+	"files": [
+		"build/src",
+		"build/adonis-typings",
+		"build/providers",
+		"build/templates",
+		"build/index.d.ts",
+		"build/index.js",
+		"README.md",
+		"src",
+		"providers",
+		"templates"
+	],
+	"adonisjs": {
+		"types": "@ksgl/adonis5-audit",
+		"providers": [
+			"@ksgl/adonis5-audit"
+		],
+		"templates": {
+			"basePath": "./build/templates",
+			"database": [
+				{
+					"src": "00000000000_audits.txt",
+					"dest": "migrations/00000000000_audits"
+				}
+			]
+		}
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-customizable"
+		}
+	},
+	"np": {
+		"contents": ".",
+		"anyBranch": false
+	},
+	"dependencies": {
+		"@types/lodash": "^4.14.191",
+		"debug": "^4.3.4",
+		"lodash": "^4.17.21",
+		"luxon": "^3.2.1",
+		"node-exceptions": "^4.0.1"
+	},
+	"peerDependencies": {
+		"@adonisjs/events": "^7.1.2"
+	},
+	"devDependencies": {
+		"@adonisjs/core": "^5.8.4",
+		"@adonisjs/events": "^7.0.1",
+		"@adonisjs/ioc-transformer": "^2.3.2",
+		"@adonisjs/lucid": "^18.1.0",
+		"@adonisjs/mrm-preset": "^5.0.3",
+		"@adonisjs/require-ts": "^2.0.12",
+		"@commitlint/cli": "^16.3.0",
+		"@favoloso/conventional-changelog-emoji": "^0.10.0",
+		"@release-it/bumper": "4.0.0",
+		"@types/debug": "^4.1.7",
+		"@types/node": "^14.14.45",
+		"@types/ramda": "^0.27.62",
+		"adonis-provider-tester": "^1.2.0",
+		"chai": "^4.3.4",
+		"commitizen": "^4.2.4",
+		"commitlint-config-gitmoji": "^2.2.5",
+		"cz-conventional-changelog": "^3.3.0",
+		"cz-customizable": "^6.9.1",
+		"doctoc": "^2.1.0",
+		"dotenv": "^10.0.0",
+		"eslint": "^8.6.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-adonis": "^2.1.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"japa": "^4.0.0",
+		"mrm": "^3.0.10",
+		"np": "^7.6.0",
+		"npm-audit-html": "^1.5.0",
+		"prettier": "^2.5.1",
+		"reflect-metadata": "^0.1.13",
+		"release-it": "15.3.0",
+		"source-map-support": "^0.5.21",
+		"supertest": "^6.1.6",
+		"ts-mockito": "^2.6.1",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.5.4",
+		"yargs": "^15.4.1"
+	},
+	"directories": {
+		"test": "test"
+	},
+	"prettier": {
+		"trailingComma": "es5",
+		"semi": false,
+		"singleQuote": true,
+		"useTabs": false,
+		"quoteProps": "consistent",
+		"bracketSpacing": true,
+		"arrowParens": "always",
+		"printWidth": 100
+	},
+	"release-it": {
+		"git": {
+			"tagName": "v${version}",
+			"commitMessage": "🔖 chore(release): v${version}",
+			"pushArgs": [
+				"--follow-tags",
+				"--force"
+			]
+		},
+		"github": {
+			"release": false,
+			"release is disabled due automated github actions": false
+		},
+		"npm": {
+			"publish": false
+		},
+		"increment": "conventional:@favoloso/emoji",
+		"scripts": {
+			"changelog": "./node_modules/.bin/conventional-changelog -p @favoloso/emoji | tail -n +3",
+			"beforeStage": "./node_modules/.bin/conventional-changelog -p @favoloso/emoji -i CHANGELOG.md -s"
+		},
+		"plugins": {
+			"@release-it/bumper": {
+				"out": [
+					"./client/package.json"
+				]
+			}
+		},
+		"hooks": {
+			"after:bump": "npx gitmoji-changelog -y --group-similar-commits && git add CHANGELOG.md"
+		}
+	}
+}

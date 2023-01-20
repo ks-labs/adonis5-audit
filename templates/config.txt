@@ -1,0 +1,9 @@
+import { AuditConfig } from '@ioc:Adonis/Addons/Adonis5-Audit'
+
+export default {
+
+  debug: true,
+
+  logLevel: 'warn'
+
+} as AuditConfig
