@@ -1,37 +1,38 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of contents
 
 - [🔖 Adonis5 Audit](#-adonis5-audit)
   - [How to use](#how-to-use)
-  - [Template Files](#template-files)
-      - [Audit Migration](#audit-migration)
-      - [Audit Model](#audit-model)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+  - [All Template Files](#all-template-files)
+    - [Audit Migration File](#Audit-Migration-File)
+    - [Audit Model Example](#Audit-Model-Example)
 
 # 🔖 Adonis5 Audit
 
-Audit lucid models with Adonisjs V5 !
+Audit lucid models with Adonisjs V5 easily with a Mixin !!
+Everthing your models need to do, are pass the context like `await currentMyModel.save({ ctx })`
 
 ## How to use
 
-1. Install the package `npm i @ksgl/adonis5-audit`
+1.  Install the package `npm i adonis5-audit`
+2.  Copy migration file, add provider to your project [`node ace invoke adonis5-audit`](#Audit-Migration-File)
+3.  Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
+4.  Add it on your models importing and using with the composition helper
 
-2. Copy migration file, add provider to your project `node ace invoke @ksgl/adonis5-audit`
+```ts
+// you need this to extend your models
+import { compose } from '@ioc:Adonis/Core/Helpers'
+//  AuditMixin - [[ Yes we have a simple mixin ]]
+//  createAudit - [[this could create custom audit entries]]
+import AuditMixin, { createAudit } from '@ioc:Adonis/Addons/AuditMixin'
 
-3. Define Audit Model like one in folder `templates/Audit.txt`
+export default class MyAwesomeModel extends compose(BaseModel, AuditMixin ) {
+    // ... your custom implementation
+}
+```
 
-4. Add it on your models importing and using with the composition helper
- ```ts
- // @ts-ignore
- import { compose } from '@ioc:Adonis/Core/Helpers'
- import AuditMixin from '@ioc:Adonis/Addons/AuditMixin'
+1.  Audit your model from anywhere with HttpContext !!
+    _(you could try use HttpContext.get() to get current request context (but i prefer pass explicitly))_
 
- export default class MyAwesomeModel extends compose(BaseModel, AuditMixin) { ... }
- ```
-
-5. Call it from anythere
 ```ts
 export default class MyModelsController {
 
@@ -63,9 +64,9 @@ export default class MyModelsController {
 }
 ```
 
-## Template Files
+## All Template Files
 
-#### Audit Migration
+#### Audit Migration File
 
 ```ts
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
@@ -76,7 +77,7 @@ export default class Audits extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      // Usuário
+      // User id from ctx auth obj
       table
         .integer('user_id')
         .unsigned()
@@ -85,19 +86,19 @@ export default class Audits extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('SET NULL')
-      // Nome
+      // Entity Id
       table.string('auditable_id').nullable()
-      // Auditável
+      // Entity Name
       table.string('auditable').nullable()
-      // Nome do Evento
+      // Event name saved
       table.string('event').nullable()
-      // IP
+      // IP from ctx
       table.string('ip').nullable()
-      // text
+      // URL request from ctx
       table.string('url').nullable()
-      // Antes
+      // Data Before
       table.json('old_data').nullable()
-      // Depois
+      // Data After
       table.json('new_data').nullable()
 
       table.timestamp('deleted_at', { useTz: true }).nullable().defaultTo(null)
@@ -111,7 +112,7 @@ export default class Audits extends BaseSchema {
 }
 ```
 
-#### Audit Model
+#### Audit Model Example
 
 ```ts
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
@@ -123,7 +124,7 @@ export default class Audit extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  /** Usuário */
+  /** User Id */
 
   @column()
   public userId: number | null = null
@@ -132,31 +133,31 @@ export default class Audit extends BaseModel {
   })
   public user: BelongsTo<typeof User>
 
-  /** Nome */
+  /** Entity Id */
   @column()
   public auditableId: string | null
 
-  /** Auditável */
+  /** Entity Name */
   @column()
   public auditable: string | null
 
-  /** Nome do Evento */
+  /** Event Name */
   @column()
   public event: string
 
-  /** IP */
+  /** IP from CTX */
   @column()
   public ip: string | null
 
-  /** text */
+  /** URL from CTX */
   @column()
   public url: string | null
 
-  /** Antes */
+  /** toJson() Data before*/
   @column()
   public oldData: any
 
-  /** Depois */
+  /** toJson() Data After*/
   @column()
   public newData: any
 

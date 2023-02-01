@@ -12,7 +12,4 @@ export default class Adonis5AuditProvider {
       return createAuditMixin({ app: this.app })
     })
   }
-
-  // IoC container is ready
-  public async boot(): Promise<void> {}
 }

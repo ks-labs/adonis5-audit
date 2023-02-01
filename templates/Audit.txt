@@ -4,49 +4,49 @@ import { DateTime } from 'luxon'
 import User from './User'
 
 export default class Audit extends BaseModel {
-  @column({ isPrimary: true })
-  public id: number
+	@column({ isPrimary: true })
+	public id: number
 
-  /** Usuário */
+	/** User Id */
 
-  @column()
-  public userId: number | null = null
-  @belongsTo(() => User, {
-    foreignKey: 'userId',
-  })
-  public user: BelongsTo<typeof User>
+	@column()
+	public userId: number | null = null
+	@belongsTo(() => User, {
+		foreignKey: 'userId',
+	})
+	public user: BelongsTo<typeof User>
 
-  /** Nome */
-  @column()
-  public auditableId: string | null
+	/** Entity Id */
+	@column()
+	public auditableId: string | null
 
-  /** Auditável */
-  @column()
-  public auditable: string | null
+	/** Entity Name */
+	@column()
+	public auditable: string | null
 
-  /** Nome do Evento */
-  @column()
-  public event: string
+	/** Event Name */
+	@column()
+	public event: string
 
-  /** IP */
-  @column()
-  public ip: string | null
+	/** IP from CTX */
+	@column()
+	public ip: string | null
 
-  /** text */
-  @column()
-  public url: string | null
+	/** URL from CTX */
+	@column()
+	public url: string | null
 
-  /** Antes */
-  @column()
-  public oldData: any
+	/** toJson() Data before*/
+	@column()
+	public oldData: any
 
-  /** Depois */
-  @column()
-  public newData: any
+	/** toJson() Data After*/
+	@column()
+	public newData: any
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+	@column.dateTime({ autoCreate: true })
+	public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+	@column.dateTime({ autoCreate: true, autoUpdate: true })
+	public updatedAt: DateTime
 }

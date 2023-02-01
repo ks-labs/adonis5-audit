@@ -6,7 +6,7 @@ export default class Audits extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      // Usuário
+      // User id from Auth in ctx
       table
         .integer('user_id')
         .unsigned()
@@ -15,19 +15,19 @@ export default class Audits extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('SET NULL')
-      // Nome
+      // Entity Id
       table.string('auditable_id').nullable()
-      // Auditável
+      // Entity Name
       table.string('auditable').nullable()
-      // Nome do Evento
+      // Event name saved
       table.string('event').nullable()
-      // IP
+      // IP from ctx
       table.string('ip').nullable()
-      // text
+      // URL requested from ctx
       table.string('url').nullable()
-      // Antes
+      // Data Before
       table.json('old_data').nullable()
-      // Depois
+      // Data After
       table.json('new_data').nullable()
 
       table.timestamp('deleted_at', { useTz: true }).nullable().defaultTo(null)
