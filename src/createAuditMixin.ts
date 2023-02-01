@@ -16,14 +16,14 @@ export default function ({ app }: { app: ApplicationContract }) {
 
   function AuditMixinGenerator<T extends NormalizeConstructor<LucidModel>>(superclass: T) {
     class AuditMixin extends superclass {
-      // #region Implementation used by functions to call original behaviour
+      // #region Used to call original super.behaviour
       public _originalSave() {
         return super.save()
       }
       public _originalDelete() {
         return super.delete()
       }
-      // #endregion Implementation used by functions to call original behaviour
+      // #endregion Used to call original super.behaviour
 
       // @ts-ignore
       public ignoreAuditFields = ['updated_at', 'updateAt']

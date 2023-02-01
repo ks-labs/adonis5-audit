@@ -22,10 +22,10 @@
 		"cma": "git add . && cz",
 		"ri": "npm run release",
 		"rici": "release-it --ci",
-		"release": "release-it",
-		"release:patch": "release-it patch",
-		"release:minor": "release-it minor",
-		"release:major": "release-it major",
+		"r": "release-it",
+		"r:p": "release-it patch",
+		"r:mi": "release-it minor",
+		"r:ma": "release-it major",
 		"postinstall": "npx husky init"
 	},
 	"repository": {
