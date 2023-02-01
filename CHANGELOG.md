@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="1.0.2"></a>
+## 1.0.2 (2023-02-01)
+
+### Fixed
+
+- 🐛 fix(typings): fix typing definitions to implement model corretly allowing inheritance [[3ce7a07](https://github.com/ks-labs/adonis5-audit/commit/3ce7a071ecd1b64c0479f31ade043a55948b33c1)]
+
+
 <a name="1.0.1"></a>
 ## 1.0.1 (2023-02-01)
 
