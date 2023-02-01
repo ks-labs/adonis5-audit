@@ -8,18 +8,18 @@ declare module '@ioc:Adonis/Addons/AuditMixin' {
   }
 
   const BaseModel: LucidModel
-  export interface AuditMixin<T extends NormalizeConstructor<typeof BaseModel>> {
-    _originalSave: () => Promise<T>
-    _originalDelete: () => Promise<void>
+  interface AuditMixin extends LucidModel {
     ignoreAuditFields: string[]
     onlyFields: any[]
-    save: (params: any | { ctx }) => Promise<T>
+    save: (params: any | { ctx }) => Promise<this>
     delete: (params: any | { ctx }) => Promise<void>
   }
 
+  const AuditClass: AuditMixin
+
   export default function <T extends NormalizeConstructor<typeof BaseModel>>(
     superclass: T
-  ): typeof BaseModel
+  ): typeof AuditClass
 
   type AuditData = {
     auth: any
