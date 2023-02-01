@@ -1,24 +1,19 @@
 {
-	"extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
 	"compileOnSave": true,
 	"compilerOptions": {
 		"skipLibCheck": true,
-		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"incremental": true,
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"types": [
-			"@types/node",
-			"@adonisjs/core",
-			"@adonisjs/lucid",
-		]
+		"emitDecoratorMetadata": true,
+		"resolveJsonModule": true
 	},
-	"files": [
-		"./node_modules/@adonisjs/logger/build/adonis-typings/logger.d.ts"
-	],
 	"exclude": [
 		"node_modules",
 		"build"
+	],
+	"extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
+	"files": [
+		"./node_modules/@adonisjs/core/build/adonis-typings/index.d.ts",
+		"./node_modules/@adonisjs/lucid/build/adonis-typings/index.d.ts",
+		"./adonis-typings/index.ts"
 	]
 }

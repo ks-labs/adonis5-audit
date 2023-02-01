@@ -10,7 +10,6 @@
 		"format": "prettier --write .",
 		"version": "npm run build",
 		"run-prettier": "prettier --write .",
-		"typings": "./build/adonis-typings/index.d.ts",
 		"lint": "eslint . --ext=.ts",
 		"pretest": "npm run lint",
 		"test": "node japaFile.js",
@@ -45,11 +44,19 @@
 	],
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/ksgl/adonis5-audit/issues"
+		"url": "https://github.com/ks-labs/adonis5-audit/issues"
 	},
-	"homepage": "https://github.com/ksgl/adonis5-audit#readme",
+	"homepage": "https://github.com/ks-labs/adonis5-audit#readme",
 	"types": "build/adonis-typings/index.d.ts",
 	"typings": "build/adonis-typings/index.d.ts",
+	"files": [
+		"build/adonis-typings",
+		"build/providers",
+		"build/src",
+		"build/index.d.ts",
+		"build/index.js",
+		"build/templates"
+	],
 	"husky": {
 		"hooks": {
 			"pre-commit": "npm audit --production --json | ./node_modules/.bin/npm-audit-html && git add npm-audit.html && doctoc README.md --title='## Table of contents' && git add README.md",
@@ -65,22 +72,10 @@
 		]
 	},
 	"main": "build/index.js",
-	"files": [
-		"build/src",
-		"build/adonis-typings",
-		"build/providers",
-		"build/templates",
-		"build/index.d.ts",
-		"build/index.js",
-		"README.md",
-		"src",
-		"providers",
-		"templates"
-	],
 	"adonisjs": {
-		"types": "@ksgl/adonis5-audit",
+		"types": "adonis5-audit",
 		"providers": [
-			"@ksgl/adonis5-audit"
+			"adonis5-audit"
 		],
 		"templates": {
 			"basePath": "./build/templates",
