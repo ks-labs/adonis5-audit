@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="1.0.3"></a>
+## 1.0.3 (2023-02-03)
+
+### Changed
+
+- 🚚 chore(typings): remove unecessary methods declaration [[cc7300a](https://github.com/ks-labs/adonis5-audit/commit/cc7300a98fe830ef97e7aaff5ed4b9d5578c3230)]
+
+### Fixed
+
+- 🐛 fix(typing): refactor entire typing system and improved audit class manipulation [[009155f](https://github.com/ks-labs/adonis5-audit/commit/009155f8041dd960bd6d36531f27fbe0e8a0c06f)]
+
+
 <a name="1.0.2"></a>
 ## 1.0.2 (2023-02-01)
 
