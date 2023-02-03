@@ -2,7 +2,7 @@
 
 - [🔖 Adonis5 Audit](#-adonis5-audit)
   - [How to use](#how-to-use)
-  - [All Template Files](#all-template-files)
+  - [Template Files](#template-files)
     - [Audit Migration File](#Audit-Migration-File)
     - [Audit Model Example](#Audit-Model-Example)
 
@@ -13,10 +13,10 @@ Everthing your models need to do, are pass the context like `await currentMyMode
 
 ## How to use
 
-1.  Install the package `npm i adonis5-audit`
-2.  Copy migration file, add provider to your project [`node ace invoke adonis5-audit`](#Audit-Migration-File)
-3.  Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
-4.  Add it on your models importing and using with the composition helper
+1. Install the package `npm i adonis5-audit`
+2. Copy migration file, add provider to your project [`node ace invoke adonis5-audit`](#Audit-Migration-File)
+3. Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
+4. Add it on your models importing and using with the composition helper
 
 ```ts
 // you need this to extend your models
@@ -30,8 +30,8 @@ export default class MyAwesomeModel extends compose(BaseModel, AuditMixin ) {
 }
 ```
 
-1.  Audit your model from anywhere with HttpContext !!
-    _(you could try use HttpContext.get() to get current request context (but i prefer pass explicitly))_
+1. Audit your model from anywhere sending the HttpContext object !!
+   _(you could try use HttpContext.get() to get current request context (but i prefer pass explicitly))_
 
 ```ts
 export default class MyModelsController {
@@ -64,9 +64,30 @@ export default class MyModelsController {
 }
 ```
 
-## All Template Files
+## Oh we also have custom events support !!
 
-#### Audit Migration File
+```ts
+import { createAudit } from '@ioc:Adonis/Addons/AuditHelpers'
+// we recommend define your app custom events 
+// in some centralized file as Enum
+// this will ensure dont have event name change
+import { CustomAuditEvents } from 'App/Types/AuditEvents' 
+
+// the following code will create your custom event .toString()
+await createAudit({
+  auth: ctx.auth,
+  request,
+  event: 'CUSTOM_INTEGRATION', // this could be an String
+  auditable_id: manifest.id,
+  auditable: 'Manifest',
+  newData: customData.toJSON(),
+  auditType: Audit,
+})
+```
+
+## Template Files
+
+#### Audit Migration Example
 
 ```ts
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
@@ -124,10 +145,9 @@ export default class Audit extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  /** User Id */
-
   @column()
   public userId: number | null = null
+  /** User Id */
   @belongsTo(() => User, {
     foreignKey: 'userId',
   })

@@ -14,7 +14,7 @@ export default async function (that, auditCfg: AuditContext) {
     ignoreDiff: that.ignoreAuditFields,
     oldData: currentData,
     newData: null,
-    AuditModel: auditCfg.AuditModel,
+    auditClass: auditCfg.auditClass,
   })
   return result
 }

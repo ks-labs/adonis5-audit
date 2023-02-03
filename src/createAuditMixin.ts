@@ -1,18 +1,17 @@
 import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
+import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 import { AuditEvents } from './contracts/AuditEvents'
 import deleteWithAudit from './audit/deleteWithAudit'
 import createOrUpdateWithAudit from './audit/createOrUpdateWithAudit'
 import buildContextObject from './infraestructure/buildCurrentContext'
-import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import createAudit from './audit/createAudit'
 
 /**
  * This trait is used to add the hability to notify a model using any channel
  */
 export default function ({ app }: { app: ApplicationContract }) {
-  const AuditModel = app.container.use('App/Models/Audit')
+  const auditClass = app.container.use('App/Models/Audit')
 
   function AuditMixinGenerator<T extends NormalizeConstructor<LucidModel>>(superclass: T) {
     class AuditMixin extends superclass {
@@ -32,7 +31,7 @@ export default function ({ app }: { app: ApplicationContract }) {
 
       // @ts-ignore
       public async save(params: any): Promise<any> {
-        const auditCtx = buildContextObject(this, arguments, AuditModel)
+        const auditCtx = buildContextObject(this, arguments, auditClass)
         if (auditCtx) {
           return createOrUpdateWithAudit(this, auditCtx)
         }
@@ -41,7 +40,7 @@ export default function ({ app }: { app: ApplicationContract }) {
 
       // @ts-ignore
       public async delete(params: any): Promise<void> {
-        const auditCtx = buildContextObject(this, arguments, AuditModel)
+        const auditCtx = buildContextObject(this, arguments, auditClass)
         if (auditCtx) {
           auditCtx.event = AuditEvents.DELETE
           return deleteWithAudit(this, auditCtx)
@@ -53,5 +52,3 @@ export default function ({ app }: { app: ApplicationContract }) {
   }
   return AuditMixinGenerator
 }
-
-export { createAudit }

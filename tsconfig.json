@@ -1,10 +1,25 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"skipLibCheck": true,
 		"experimentalDecorators": true,
+		"skipLibCheck": true,
+		"outDir": "build",
+		"target": "es6",
+		"rootDir": "./",
+		"sourceMap": true,
+		"paths": {},
+		"types": [
+			"@types/node",
+			"@adonisjs/core",
+			"@adonisjs/lucid"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
 		"emitDecoratorMetadata": true,
-		"resolveJsonModule": true
+		"pretty": true,
+		"lib": [
+			"esnext"
+		]
 	},
 	"exclude": [
 		"node_modules",
@@ -12,8 +27,8 @@
 	],
 	"extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
 	"files": [
-		"./node_modules/@adonisjs/core/build/adonis-typings/index.d.ts",
-		"./node_modules/@adonisjs/lucid/build/adonis-typings/index.d.ts",
-		"./adonis-typings/index.ts"
+		"./adonis-typings/index.ts",
+		"./adonis-typings/audit-mixin.ts",
+		"./adonis-typings/audit-helpers.ts"
 	]
 }

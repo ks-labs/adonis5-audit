@@ -2,7 +2,7 @@ import { get, isNil, isObjectLike } from 'lodash'
 import AuditContext from '../contracts/AuditContext'
 import Audit from '../contracts/IAudit'
 
-export default function (that, AuditModel: Audit, argumentCfg: any): AuditContext | null {
+export default function (that, auditClass: Audit, argumentCfg: any): AuditContext | null {
   const MODEL_WITH_AUDIT_DEFINITION = Object.getPrototypeOf(that).constructor.withAudit
   const HTTP_CONTEXT_PARAM = get(argumentCfg, 'ctx', null)
   const WITH_AUDIT_PARAM = get(argumentCfg, 'audit', null)
@@ -26,7 +26,7 @@ export default function (that, AuditModel: Audit, argumentCfg: any): AuditContex
       event: get(argumentCfg, 'event', null),
       auditable: Object.getPrototypeOf(that).constructor.name,
       ctx: HTTP_CONTEXT_PARAM,
-      AuditModel: AuditModel,
+      auditClass,
     }
   }
 

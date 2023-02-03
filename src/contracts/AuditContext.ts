@@ -6,6 +6,6 @@ type AuditContext = {
   debug: boolean | any
   event: string | any
   ctx: any
-  AuditModel: Audit
+  auditClass: Audit
 }
 export default AuditContext

@@ -11,5 +11,5 @@ build
 dist
 shrinkwrap.yaml
 test/__app
-
+test/helpers/app/**
 .env

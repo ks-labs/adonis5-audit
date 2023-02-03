@@ -1,5 +1,7 @@
-import { get, omit } from 'lodash'
+import { get, has, omit } from 'lodash'
 import { RuntimeException } from 'node-exceptions'
+
+const isFunction = (f) => !!f && f instanceof Function
 
 /**
  * Run the audit
@@ -28,10 +30,13 @@ export default async function ({
   ip = null,
   oldData = null,
   newData = null,
-  AuditModel,
+  auditClass,
 }) {
-  if (!AuditModel) {
-    throw new RuntimeException('Invalid audit model implementation ' + JSON.stringify(event))
+  if (!has(auditClass, 'default') && isFunction(auditClass)) {
+    auditClass = { default: auditClass }
+  }
+  if (!auditClass) {
+    throw new RuntimeException('Invalid audit model supplied ' + JSON.stringify(event))
   }
   if (!event) {
     throw new RuntimeException('Invalid audit event provided ' + JSON.stringify(event))
@@ -44,9 +49,8 @@ export default async function ({
 
   // get user data to store
   const userId = get(auth, 'user.id', null)
-
   // save audit
-  return await AuditModel.default.create({
+  return await auditClass.default.create({
     userId,
     auditableId: auditable_id,
     auditable,

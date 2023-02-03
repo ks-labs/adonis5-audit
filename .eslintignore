@@ -1,2 +1,3 @@
 build
 *.md
+./test/helpers/app/**

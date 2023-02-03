@@ -7,3 +7,5 @@ package.json
 package-lock.json
 *.html
 *.txt
+# test files
+test/helpers/app/**
