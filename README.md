@@ -9,7 +9,7 @@
 # 🔖 Adonis5 Audit
 
 Audit lucid models with Adonisjs V5 easily with helper functions !!
-After setup everthing that you need its call its `await myModel.save({ ctx })`
+After setup everthing that you need its call its `await MyAuditedModel.save({ ctx })`
 
 ## How to use
 
@@ -25,7 +25,7 @@ After setup everthing that you need its call its `await myModel.save({ ctx })`
 // you need this to extend your models
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { auditSave, auditDelete, createAudit } from '@ioc:Adonis/Addons/Audit'
-class CRUDModel extends BaseModel {
+class MyCRUDModel extends BaseModel {
 // we need this to call the BaseModel original behaviour
 // when dont have changes in code
   public superSave(): any {
@@ -37,13 +37,13 @@ class CRUDModel extends BaseModel {
 
   /** @ts-ignore */
   public async save(param?: { ctx }): Promise<this> {
-	// you could use HttpContext.get() here !!
+// you could use HttpContext.get() here !!
     const Audit = (await import('../Audit')).default // this type of import avoid weird behaviour
     return auditSave(this, arguments, Audit)
   }
   /** @ts-ignore */
   public async delete(param?: { ctx }): Promise<void> {
-	// you could use HttpContext.get() here !!
+// you could use HttpContext.get() here !!
     const Audit = (await import('App/Models/Audit')).default // this type of import avoid weird behaviour
     return auditSave(this, arguments, Audit)
   }
@@ -51,7 +51,7 @@ class CRUDModel extends BaseModel {
 }
 
 
-export default class MyAwesomeModel extends CRUDModel { // now all we need is inherit from CRUDModel in all our classes
+export default class MyAuditedModel extends CRUDModel { // now all we need is inherit from CRUDModel in all our classes
     // ... your custom implementation
 }
 ```
@@ -60,32 +60,31 @@ export default class MyAwesomeModel extends CRUDModel { // now all we need is in
    _(you could try use `HttpContext.get() and enabling `useAsyncLocalStorage: true,`it on`app.ts`  to get current request context (but i prefer pass explicitly))_
 
 ```ts
-export default class MyModelsController {
+export default class MyAuditedModelController {
 
   public async store(ctx: HttpContextContract) {
     const { request } = ctx
-    const currentMyModel = new MyModel()
-    currentMyModel.cleanAndMerge(request.body()) // <= custom Code ehehe
-
-    await currentMyModel.save({ ctx }) // <= This will make an CREATE event entry on audits table since model was not saved before
-    await currentMyModel.load('storehouse')
-    return currentMyModel
+    const auditedModel = new MyAuditedModel()
+    auditedModel.cleanAndMerge(request.body()) // <= custom function
+    await auditedModel.save({ ctx }) // <= This will make an CREATE event entry on audits, since model was not saved before
+    await auditedModel.load('storehouse')
+    return auditedModel
   }
 
   public async update(ctx: HttpContextContract) {
     const { request } = ctx
-    const currentMyModel = await MyModel.findOrFail(request.params().id)
-    await currentMyModel.cleanAndMerge(request.body()) // <= custom Code ehehe
+    const auditedModel = await MyAuditedModel.findOrFail(request.params().id)
+    await auditedModel.cleanAndMerge(request.body()) // <= custom Code ehehe
 
-    await currentMyModel.save({ ctx }) // <= This will make an UPDATE event entry on audits table
-    return currentMyModel
+    await auditedModel.save({ ctx }) // <= This will make an UPDATE event entry on audits table
+    return auditedModel
   }
 
   public async destroy(ctx: HttpContextContract) {
    const { request } = ctx // <= We need the ctx here because the lib use it to log IP Addresses, User and more !
-   const myModelInstance = await MyModel.findOrFail(request.params().id)
-   await myModelInstance.delete({ ctx }) // <- this will make an DELETE event entry on audits table
-   return myModelInstance
+   const auditedModel = await MyAuditedModel.findOrFail(request.params().id)
+   await auditedModel.delete({ ctx }) // <- this will make an DELETE event entry on audits table
+   return auditedModel
   }
 }
 ```

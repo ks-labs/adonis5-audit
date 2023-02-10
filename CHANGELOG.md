@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.0.1"></a>
+## 2.0.1 (2023-02-10)
+
+### Added
+
+- ✅ test(functions): adds a basic workflow for create update and delete and create the github workflow [[2a3e6b8](https://github.com/ks-labs/adonis5-audit/commit/2a3e6b8802b0e9aa41e62eed73c7f72927a535e5)]
+
+
 <a name="2.0.0"></a>
 ## 2.0.0 (2023-02-10)
 
