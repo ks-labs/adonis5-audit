@@ -15,7 +15,7 @@ export default async function (that, auditCfg: AuditContext) {
     only(omit(oldData, that.ignoreAuditFields), that.onlyFields), // old data without ignoreDiffCols
     only(omit(newData, that.ignoreAuditFields), that.onlyFields) // new data without ignoreDiffCols
   )
-  const saveResult = await that._originalSave()
+  const saveResult = await that.superSave()
 
   if (hasChanges) {
     // save new id on create event to be accessible from audits listing

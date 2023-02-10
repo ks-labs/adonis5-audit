@@ -38,7 +38,7 @@ test.group('Auto preload', (group) => {
   })
 
   test('save must works properly', async ({ expect }) => {
-    class User extends compose(BaseModel, AuditMixin) {
+    class User extends BaseModel {
       @column({ isPrimary: true })
       public id: number
 
@@ -57,7 +57,7 @@ test.group('Auto preload', (group) => {
     expect,
   }) => {
     expect(() => {
-      class User extends compose(BaseModel, AuditMixin) {
+      class User extends BaseModel {
         public static $with = [1]
 
         @column({ isPrimary: true })

@@ -1,4 +1,4 @@
-import Audit from '../contracts/IAudit'
+import IAudit from '../contracts/IAudit'
 
 type AuditContext = {
   auditable: string | any
@@ -6,6 +6,6 @@ type AuditContext = {
   debug: boolean | any
   event: string | any
   ctx: any
-  auditClass: Audit
+  auditClass: IAudit
 }
 export default AuditContext

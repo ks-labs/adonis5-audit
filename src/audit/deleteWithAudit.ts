@@ -4,7 +4,7 @@ import createAudit from './createAudit'
 
 export default async function (that, auditCfg: AuditContext) {
   let currentData: any = clone(omit(that.$attributes))
-  const result = await that._originalDelete()
+  const result = await that.superDelete()
   await createAudit({
     event: auditCfg.event,
     auditable: auditCfg.auditable,

@@ -8,8 +8,8 @@
 
 # 🔖 Adonis5 Audit
 
-Audit lucid models with Adonisjs V5 easily with a Mixin !!
-Everthing your models need to do, are pass the context like `await currentMyModel.save({ ctx })`
+Audit lucid models with Adonisjs V5 easily with helper functions !!
+After setup everthing you need call its `await myModel.save({ ctx })`
 
 ## How to use
 
@@ -18,20 +18,46 @@ Everthing your models need to do, are pass the context like `await currentMyMode
 3. Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
 4. Add it on your models importing and using with the composition helper
 
+   > Unfourtunely because some issues during development we cant make it works out of box as mixin, because during `db:seed` commands the typescript import causes some errors like saying that imported Audit model is a undefined type, so to avoid this we need import our models manualy to the lib we recommend create a "BaseModel" fo your project
+   >
+
 ```ts
 // you need this to extend your models
 import { compose } from '@ioc:Adonis/Core/Helpers'
-//  AuditMixin - [[ Yes we have a simple mixin ]]
-//  createAudit - [[this could create custom audit entries]]
-import AuditMixin, { createAudit } from '@ioc:Adonis/Addons/AuditMixin'
+import { auditSave, auditDelete, createAudit } from '@ioc:Adonis/Addons/Audit'
+class CRUDModel extends BaseModel {
+// we need this to call the BaseModel original behaviour
+// when dont have changes in code
+  public superSave(): any {
+    return super.save()
+  }
+  public superDelete(): any { // and this too
+    return super.delete()
+  }
 
-export default class MyAwesomeModel extends compose(BaseModel, AuditMixin ) {
+  /** @ts-ignore */
+  public async save(param?: { ctx }): Promise<this> {
+	// you could use HttpContext.get() here !!
+    const Audit = (await import('../Audit')).default // this type of import avoid weird behaviour
+    return auditSave(this, arguments, Audit)
+  }
+  /** @ts-ignore */
+  public async delete(param?: { ctx }): Promise<void> {
+	// you could use HttpContext.get() here !!
+    const Audit = (await import('App/Models/Audit')).default // this type of import avoid weird behaviour
+    return auditSave(this, arguments, Audit)
+  }
+
+}
+
+
+export default class MyAwesomeModel extends CRUDModel { // now all we need is inherit from CRUDModel in all our classes
     // ... your custom implementation
 }
 ```
 
 1. Audit your model from anywhere sending the HttpContext object !!
-   _(you could try use HttpContext.get() to get current request context (but i prefer pass explicitly))_
+   _(you could try use `HttpContext.get() and enabling `useAsyncLocalStorage: true,`it on`app.ts`  to get current request context (but i prefer pass explicitly))_
 
 ```ts
 export default class MyModelsController {
@@ -68,10 +94,10 @@ export default class MyModelsController {
 
 ```ts
 import { createAudit } from '@ioc:Adonis/Addons/AuditHelpers'
-// we recommend define your app custom events 
+// we recommend define your app custom events
 // in some centralized file as Enum
 // this will ensure dont have event name change
-import { CustomAuditEvents } from 'App/Types/AuditEvents' 
+import { CustomAuditEvents } from 'App/Types/AuditEvents'
 
 // the following code will create your custom event .toString()
 await createAudit({

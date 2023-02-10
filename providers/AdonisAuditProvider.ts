@@ -1,6 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import createAudit from '../src/audit/createAudit'
-import createAuditMixin from '../src/createAuditMixin'
+import AuditLib from '../src'
 
 export default class Adonis5AuditProvider {
   public static needsApplication = true
@@ -9,17 +8,13 @@ export default class Adonis5AuditProvider {
 
   // Register your own bindings
   public async register(): Promise<void> {
-    this.app.container.bind('Adonis/Addons/AuditMixin', () => {
-      return createAuditMixin({ app: this.app })
+    this.app.container.singleton('Adonis/Addons/Audit', () => {
+      return AuditLib
     })
   }
 
   // IoC container is ready
-  public async boot(): Promise<void> {
-    this.app.container.bind('Adonis/Addons/AuditHelpers', () => {
-      return { createAudit }
-    })
-  }
+  public async boot(): Promise<void> {}
   // App is ready
   public async ready() {}
 
