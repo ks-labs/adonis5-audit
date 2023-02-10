@@ -11,7 +11,7 @@ export async function setupApp(): Promise<ApplicationContract> {
   await fs.add('./tmp/database.sqlite', '')
   await createAppConfig()
   await createDatabaseConfig()
-  // await createAuditModel()
+  // await createAuditModelConfig()
 
   const app = new Application(fs.basePath, 'test', {
     providers: [

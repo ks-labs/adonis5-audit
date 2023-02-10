@@ -20,7 +20,7 @@ export async function createAppConfig() {
   await fs.add(
     'config/app.ts',
     `
-export const appKey = 'averylong32charsrandomsecretkey'
+export const appKey = 'anverylong32charsrandomsecretkey'
 export const http = {
 	cookie: {},
 	trustProxy: () => true,
@@ -42,7 +42,8 @@ export async function createDatabaseConfig() {
 export async function createAuditModelConfig() {
   await fs.add(
     'app/Models/Audit.ts',
-    `import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+    `
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 
 export default class Audit extends BaseModel {

@@ -26,6 +26,7 @@ async function auditSave<T>(
   if (auditCtx) {
     return createOrUpdateWithAudit(that, auditCtx)
   }
+  // default behavior is the main implementation of save()
   return that.superSave()
 }
 
@@ -35,7 +36,7 @@ async function auditDelete<T>(
     superSave: () => Promise<T>
     superDelete: () => Promise<void>
   },
-  params: any,
+  params: any & [{ ctx }],
   auditModelUsed
 ): Promise<void> {
   Logger.debug('DISABLE ON SEED', isInsideSeed)
@@ -46,6 +47,7 @@ async function auditDelete<T>(
     auditCtx.event = AuditEvents.DELETE
     return deleteWithAudit(that, auditCtx)
   }
+  // default behavior is the main implementation of delete()
   return that.superDelete()
 }
 

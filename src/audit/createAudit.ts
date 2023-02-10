@@ -3,6 +3,14 @@ import { RuntimeException } from 'node-exceptions'
 
 const isFunction = (f) => !!f && f instanceof Function
 
+function emptyObjectReturnNull(data) {
+  try {
+    return Object.keys(data).length <= 0 ? null : data
+  } catch (e) {
+    return data
+  }
+}
+
 /**
  * Run the audit
  *
@@ -49,6 +57,7 @@ export default async function ({
 
   // get user data to store
   const userId = get(auth, 'user.id', null)
+
   // save audit
   return await auditClass.default.create({
     userId,
@@ -57,7 +66,7 @@ export default async function ({
     event,
     url,
     ip,
-    oldData: oldData ? omit(oldData, ignoreDiff) : null,
-    newData: newData ? omit(newData, ignoreDiff) : null,
+    oldData: emptyObjectReturnNull(oldData ? omit(oldData, ignoreDiff) : null),
+    newData: emptyObjectReturnNull(newData ? omit(newData, ignoreDiff) : null),
   })
 }

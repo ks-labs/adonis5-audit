@@ -5,13 +5,13 @@ declare module '@ioc:Adonis/Addons/Audit' {
 
   export function auditSave<T>(
     that: T,
-    funcParams: IArguments,
+    funcParams: any & [{ ctx }],
     auditModel: typeof BaseModel
   ): Promise<T> & Promise<void>
 
   export function auditDelete<T>(
     that: T,
-    funcParams: IArguments,
+    funcParams: any & [{ ctx }],
     auditModel: typeof BaseModel
   ): Promise<
     T & {
@@ -30,12 +30,12 @@ declare module '@ioc:Adonis/Addons/Audit' {
     auth?: any
     request?: any
     auditable?: string
-    ignoreDiff?: Array<string>
+    ignoreDiff?: string[]
     auditable_id?: string
     url?: string
     ip?: string | null
     oldData?: string
-    newData: string
+    newData?: string
     auditClass: typeof BaseModel
   }
   export function createAudit(payload: AuditData): Promise<any>

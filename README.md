@@ -1,22 +1,22 @@
 ## Table of contents
 
-- [🔖 Adonis5 Audit](#-adonis5-audit)
-  - [How to use](#how-to-use)
-  - [Template Files](#template-files)
+- [🔖 Adonis5 Audit](#🔖-Adonis5-Audit)
+  - [How to use](#How-to-use)
+  - [Template Files](#Template-Files)
     - [Audit Migration File](#Audit-Migration-File)
     - [Audit Model Example](#Audit-Model-Example)
 
 # 🔖 Adonis5 Audit
 
 Audit lucid models with Adonisjs V5 easily with helper functions !!
-After setup everthing you need call its `await myModel.save({ ctx })`
+After setup everthing that you need its call its `await myModel.save({ ctx })`
 
 ## How to use
 
 1. Install the package `npm i adonis5-audit`
 2. Copy migration file, add provider to your project [`node ace invoke adonis5-audit`](#Audit-Migration-File)
 3. Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
-4. Add it on your models importing and using with the composition helper
+4. Add it on your models replacing `save()` and `delete()` implementations and adding the auxiliary methods `superSave` and `superDelete` used by reference
 
    > Unfourtunely because some issues during development we cant make it works out of box as mixin, because during `db:seed` commands the typescript import causes some errors like saying that imported Audit model is a undefined type, so to avoid this we need import our models manualy to the lib we recommend create a "BaseModel" fo your project
    >
@@ -90,20 +90,20 @@ export default class MyModelsController {
 }
 ```
 
-## Oh we also have custom events support !!
+## Oh you can audit custom events also (they are strings)!!
 
 ```ts
-import { createAudit } from '@ioc:Adonis/Addons/AuditHelpers'
+import { auditSave, auditDelete, createAudit } from '@ioc:Adonis/Addons/Audit'
 // we recommend define your app custom events
 // in some centralized file as Enum
 // this will ensure dont have event name change
-import { CustomAuditEvents } from 'App/Types/AuditEvents'
+import { CustomAuditEvents } from '<you_types:App/Types/AuditEvents>'
 
 // the following code will create your custom event .toString()
 await createAudit({
   auth: ctx.auth,
   request,
-  event: 'CUSTOM_INTEGRATION', // this could be an String
+  event: 'CUSTOM_INTEGRATION', // this should be an String
   auditable_id: manifest.id,
   auditable: 'Manifest',
   newData: customData.toJSON(),

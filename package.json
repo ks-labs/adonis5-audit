@@ -13,6 +13,7 @@
 		"lint": "eslint . --ext=.ts",
 		"pretest": "npm run lint && tsc --noEmit",
 		"test": "node -r @adonisjs/require-ts/build/register ./japaFile.ts",
+		"test:w": "node -r @adonisjs/require-ts/build/register ./japaFile.ts",
 		"clean": "rm -rf build",
 		"compile": "npm run clean && npm run lint && tsc && npm run copy:files",
 		"build": "npm run compile",

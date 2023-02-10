@@ -32,8 +32,8 @@ export default async function (that, auditCfg: AuditContext) {
       request: auditCfg?.ctx?.request,
       auth: auditCfg?.ctx?.auth,
       ignoreDiff: that.ignoreAuditFields,
-      oldData,
-      newData,
+      oldData: oldData,
+      newData: newData,
       auditClass: auditCfg.auditClass,
     })
   }
