@@ -1,7 +1,11 @@
 # Changelog
 
-<a name="1.0.3"></a>
-## 1.0.3 (2023-02-03)
+<a name="2.0.0"></a>
+## 2.0.0 (2023-02-10)
+
+### Added
+
+- ✨ feat(api): changed entirely api to avoid  wrong behaviour during adonisjs seeds due import system [[f36dfaa](https://github.com/ks-labs/adonis5-audit/commit/f36dfaa8aad389356c0802185cfe5efb2a369be0)]
 
 ### Changed
 
