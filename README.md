@@ -7,6 +7,7 @@
     - [Audit Model Example](#Audit-Model-Example)
 
 # 🔖 Adonis5 Audit
+[![test](https://github.com/ks-labs/adonis5-audit/actions/workflows/test.yml/badge.svg)](https://github.com/ks-labs/adonis5-audit/actions/workflows/test.yml)
 
 Audit lucid models with Adonisjs V5 easily with helper functions !!
 After setup everthing that you need its call its `await MyAuditedModel.save({ ctx })`
