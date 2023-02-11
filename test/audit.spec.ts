@@ -138,13 +138,13 @@ test.group('Audit Addons Functions', (group) => {
 
   test('Test real world audit lifecycle', async ({ expect }) => {
     let allAudits: any[]
+
+    // ---------- AUDIT CREATE
     const userModel = new UserModel()
     userModel.merge({
       email: 'test@email.com',
       name: 'UserName',
     })
-    // ---------- AUDIT CREATE
-
     await userModel.save({ ctx: fakeCTX(null, null, '/create-route') })
     allAudits = await AuditModel.all()
     expect(allAudits).toHaveLength(1)
@@ -190,5 +190,17 @@ test.group('Audit Addons Functions', (group) => {
     expect(lastDeleteAudit.url).toEqual('/delete-route')
     expect(lastDeleteAudit.oldData).toEqual(updatedPayload)
     expect(lastDeleteAudit.newData).toEqual(null)
+
+    // --------- NO AUDIT WHEN WITHOUT CTX OBJECT
+
+    const userModel2 = new UserModel()
+    userModel2.merge({
+      email: 'test@other.com',
+      name: 'OtherUser',
+    })
+    await userModel2.save()
+    allAudits = await AuditModel.all()
+    // Should be the same count as in delete step because we not pass the ctx object
+    expect(allAudits).toHaveLength(3)
   })
 })
