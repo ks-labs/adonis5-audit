@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="2.0.2"></a>
+## 2.0.2 (2023-02-11)
+
+### Added
+
+- ✅ test(create-audit): add test to ensure that dont create audit events when ctx is missing [[ed95773](https://github.com/ks-labs/adonis5-audit/commit/ed9577303e3cfc929b0ee6f5aa8899cc45c716de)]
+
+### Miscellaneous
+
+- 📝 docs(badge): add github status badge [[2353a29](https://github.com/ks-labs/adonis5-audit/commit/2353a291dee1363894bf35654d8dbcdf2dbfa3a7)]
+
+
 <a name="2.0.1"></a>
 ## 2.0.1 (2023-02-10)
 
