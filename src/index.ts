@@ -1,6 +1,7 @@
 import { AuditEvents } from './contracts/AuditEvents'
 
 import createAudit from './audit/createAudit'
+import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
 
 import { Logger } from './debug'
 
@@ -51,4 +52,30 @@ async function auditDelete<T>(
   return that.superDelete()
 }
 
-export default { createAudit, auditDelete, auditSave }
+function Audit($auditModel: () => NormalizeConstructor<LucidModel>) {
+  return function <T extends NormalizeConstructor<LucidModel>>(superclass: T) {
+    class ModelWithAuditMixin extends superclass {
+      public superSave(): Promise<this> {
+        return super.save()
+      }
+      public superDelete(): Promise<void> {
+        return super.delete()
+      }
+      /** @ts-ignore */
+      public async save(param?: { ctx }): Promise<this> {
+        // you could use HttpContext.get() here !!
+        const AuditModel = $auditModel()
+        return auditSave(this, arguments, AuditModel)
+      }
+      /** @ts-ignore */
+      public async delete(param?: { ctx }): Promise<void> {
+        // you could use HttpContext.get() here !!
+        const AuditModel = $auditModel()
+        return auditDelete(this, arguments, AuditModel)
+      }
+    }
+    return ModelWithAuditMixin
+  }
+}
+
+export default { createAudit, auditDelete, auditSave, Audit }

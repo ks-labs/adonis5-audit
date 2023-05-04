@@ -2,6 +2,8 @@ declare module '@ioc:Adonis/Addons/Audit' {
   import { BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+  import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
+  import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 
   export function auditSave<T>(
     that: T,
@@ -39,4 +41,15 @@ declare module '@ioc:Adonis/Addons/Audit' {
     auditClass: typeof BaseModel
   }
   export function createAudit(payload: AuditData): Promise<any>
+
+  export interface AuditModelMixin {
+    <T extends NormalizeConstructor<LucidModel>>(superclass: T): T & {
+      superSave(): Promise<T>
+      superDelete(): Promise<void>
+      save(param?: { ctx }): Promise<T>
+      delete(param?: { ctx }): Promise<void>
+    }
+  }
+
+  export function Audit($auditModel: () => NormalizeConstructor<LucidModel>): AuditModelMixin
 }
