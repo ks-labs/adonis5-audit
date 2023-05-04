@@ -216,3 +216,15 @@ export default class Audit extends BaseModel {
   public updatedAt: DateTime
 }
 ```
+#### Composition Api Example
+
+```ts
+import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import AuditModel from 'App/Models/Audit'
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { Audit } from '@ioc:Adonis/Addons/Audit'
+
+export default class MyAuditedModel extends compose(BaseSchema, Audit(() => AuditModel)) {
+    // ... your custom implementation
+}
+```
