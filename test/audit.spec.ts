@@ -6,6 +6,7 @@ import type {
   DateColumnDecorator,
 } from '@ioc:Adonis/Lucid/Orm'
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import type { compose as ComposeType } from '@ioc:Adonis/Core/Helpers'
 
 import { test } from '@japa/runner'
 
@@ -24,6 +25,7 @@ let column: ColumnDecorator
 let columnDateTime: DateColumnDecorator
 let UserModel: any
 let AuditModel: any
+let compose: typeof ComposeType
 
 function fakeCTX(user: any, ip: any, url: any) {
   return {
@@ -45,6 +47,7 @@ test.group('Audit Addons Functions', (group) => {
     column = app.container.resolveBinding('Adonis/Lucid/Orm').column
     columnDateTime = app.container.resolveBinding('Adonis/Lucid/Orm').column.dateTime
     AuditAddons = app.container.resolveBinding('Adonis/Addons/Audit')
+    compose = app.container.resolveBinding('Adonis/Core/Helpers').compose
 
     class Audit extends BaseModel {
       @column({ isPrimary: true })
@@ -89,7 +92,10 @@ test.group('Audit Addons Functions', (group) => {
       @columnDateTime({ autoCreate: true, autoUpdate: true })
       public updatedAt: DateTime
     }
-    class User extends BaseModel {
+    class User extends compose(
+      BaseModel,
+      AuditAddons.Audit(() => Audit)
+    ) {
       @column({ isPrimary: true })
       public id: number
 
@@ -98,23 +104,6 @@ test.group('Audit Addons Functions', (group) => {
 
       @column()
       public name: string
-
-      public superSave() {
-        return super.save()
-      }
-
-      public superDelete() {
-        return super.delete()
-      }
-
-      /** @ts-ignore */
-      public async save(param?: { ctx }): Promise<this> {
-        return AuditAddons.auditSave(this, arguments, Audit)
-      }
-      /** @ts-ignore */
-      public async delete(param?: { ctx }): Promise<void> {
-        return AuditAddons.auditDelete(this, arguments, Audit)
-      }
     }
     User.boot()
     Audit.boot()
