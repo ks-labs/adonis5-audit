@@ -20,13 +20,13 @@
 		"commit": "npm run cm",
 		"cm": "cz",
 		"cma": "git add . && cz",
+		"rl": "npm i && npm link",
 		"ri": "npm run release",
 		"rici": "release-it --ci",
 		"r": "release-it",
 		"r:p": "release-it patch",
 		"r:mi": "release-it minor",
-		"r:ma": "release-it major",
-		"postinstall": "npx husky init"
+		"r:ma": "release-it major"
 	},
 	"repository": {
 		"type": "git",
@@ -55,12 +55,6 @@
 		"build/index.js",
 		"build/templates"
 	],
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm audit --production --json | ./node_modules/.bin/npm-audit-html && git add npm-audit.html && doctoc README.md --title='## Table of contents' && git add README.md",
-			"commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js"
-		}
-	},
 	"nyc": {
 		"exclude": [
 			"test"

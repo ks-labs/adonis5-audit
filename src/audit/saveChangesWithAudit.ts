@@ -2,7 +2,7 @@ import { clone, omit, isEqual } from 'lodash'
 
 import { AuditEvents } from '../contracts/AuditEvents'
 import createAudit from './createAudit'
-import doLogging from '../infraestructure/doLogging'
+import doLogging from '../infra/doLogging'
 import { only } from '../helpers/only'
 import AuditContext from '../contracts/AuditContext'
 

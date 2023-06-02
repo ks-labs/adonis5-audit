@@ -28,7 +28,5 @@
 	"extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
 	"files": [
 		"./adonis-typings/index.ts",
-		"./adonis-typings/audit-mixin.ts",
-		"./adonis-typings/audit-helpers.ts"
 	]
 }
