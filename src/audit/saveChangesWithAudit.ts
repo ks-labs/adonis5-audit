@@ -12,10 +12,14 @@ export default async function (that, auditCfg: AuditContext) {
 
   // if new and old are equal then don't bother updating
   const hasChanges = !isEqual(
-    only(omit(oldData, that.ignoreAuditFields), that.onlyFields), // old data without ignoreDiffCols
-    only(omit(newData, that.ignoreAuditFields), that.onlyFields) // new data without ignoreDiffCols
+    only(omit(oldData, that.$ignoreAuditFields), that.$auditFields), // old data without ignoreDiffCols
+    only(omit(newData, that.$ignoreAuditFields), that.$auditFields) // new data without ignoreDiffCols
   )
-  const saveResult = await that._originalSave()
+
+  if (auditCfg.event === AuditEvents.CREATE) {
+    oldData = null
+  }
+  const saveResult = await that.$superSave()
 
   if (hasChanges) {
     // save new id on create event to be accessible from audits listing
@@ -31,7 +35,7 @@ export default async function (that, auditCfg: AuditContext) {
       auditable_id: auditCfg.auditable_id,
       request: auditCfg?.ctx?.request,
       auth: auditCfg?.ctx?.auth,
-      ignoreDiff: that.ignoreAuditFields,
+      ignoreDiff: that.$ignoreAuditFields,
       oldData,
       newData,
       auditClass: auditCfg.auditClass,

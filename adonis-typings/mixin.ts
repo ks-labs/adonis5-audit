@@ -11,14 +11,15 @@ declare module '@ioc:Adonis/Addons/AuditMixin' {
   export interface AuditMixin {
     <T extends NormalizeConstructor<LucidModel>>(superclass: T): T & {
       /**
-       * Fields to be ignored always (fields to only use has priority over ignore)
+       * Fields to be ignored on update check (ignored fields has removed before $auditFields)
+       * fields written here will be ignored before you
        */
-      ignoreAuditFields: string[]
+      $ignoreAuditFields: string[]
 
       /**
-       * Fields to be audited always (fields to only use has priority over ignore)
+       * Fields to be audited always (ignored fields has removed before $auditFields)
        */
-      onlyFields: string[]
+      $auditFields: string[]
 
       /**
        * Audit the model creation/update with User inferred passed through HttpContext
