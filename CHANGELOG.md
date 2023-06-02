@@ -1,28 +1,28 @@
-# Changelog
+## 3.0.0 (2023-06-02)
 
-<a name="1.0.2"></a>
-## 1.0.2 (2023-02-01)
+* :bug: fix(typing): refactor entire typing system and improved audit class manipulation ([009155f](https://github.com/ks-labs/adonis5-audit/commit/009155f))
+* :construction: wip(mixin): changed to new mixin strategy ([770e0c6](https://github.com/ks-labs/adonis5-audit/commit/770e0c6))
+* :pencil: (commits) add new commit and changelog generation for `cm` and `cma` command ([24e58e5](https://github.com/ks-labs/adonis5-audit/commit/24e58e5))
+* :sparkles: feat(mixin): implement new mixin behaviour ([456021c](https://github.com/ks-labs/adonis5-audit/commit/456021c))
+* :truck: chore(typings): remove unecessary methods declaration ([cc7300a](https://github.com/ks-labs/adonis5-audit/commit/cc7300a))
 
-### Fixed
-
-- 🐛 fix(typings): fix typing definitions to implement model corretly allowing inheritance [[3ce7a07](https://github.com/ks-labs/adonis5-audit/commit/3ce7a071ecd1b64c0479f31ade043a55948b33c1)]
 
 
-<a name="1.0.1"></a>
-## 1.0.1 (2023-02-01)
+## <small>1.0.2 (2023-02-01)</small>
 
-### Added
+* :bug: fix(typings): fix typing definitions to implement model corretly allowing inheritance ([3ce7a07](https://github.com/ks-labs/adonis5-audit/commit/3ce7a07))
+* 🔖 chore(release): v1.0.2 ([d87e9cb](https://github.com/ks-labs/adonis5-audit/commit/d87e9cb))
 
-- ✨ feat: feat: initial release [[a4d2d21](https://github.com/ks-labs/adonis5-audit/commit/a4d2d211cff9c3003393bf67d5e6c4ef5545066d)]
 
-### Fixed
 
-- 🐛 fix(typings): add missing types to the provider used by adonisjs [[75ef85a](https://github.com/ks-labs/adonis5-audit/commit/75ef85ab9840a3196306af282776f8e2a54587b5)]
+## <small>1.0.1 (2023-02-01)</small>
 
-### Miscellaneous
+* :bug: fix(typings): add missing types to the provider used by adonisjs ([75ef85a](https://github.com/ks-labs/adonis5-audit/commit/75ef85a))
+* :memo: docs(docs): fix docs wrong words and added more samples ([bff89ea](https://github.com/ks-labs/adonis5-audit/commit/bff89ea))
+* :sparkles: feat: feat: initial release ([a4d2d21](https://github.com/ks-labs/adonis5-audit/commit/a4d2d21))
+* 🔖 chore(release): v1.0.1 ([e40f268](https://github.com/ks-labs/adonis5-audit/commit/e40f268))
+* Initial commit ([3e09b01](https://github.com/ks-labs/adonis5-audit/commit/3e09b01))
+* Update README.md ([c958b1a](https://github.com/ks-labs/adonis5-audit/commit/c958b1a))
 
-- 📝 docs(docs): fix docs wrong words and added more samples [[bff89ea](https://github.com/ks-labs/adonis5-audit/commit/bff89eaa71a658a3ac3880772b8205e14b36016d)]
--  Update README.md [[c958b1a](https://github.com/ks-labs/adonis5-audit/commit/c958b1aa7b106e3bdca65a0501a0013712ca4171)]
--  Initial commit [[3e09b01](https://github.com/ks-labs/adonis5-audit/commit/3e09b01fce7f0978165d9d43738888980b652bd3)]
 
 
