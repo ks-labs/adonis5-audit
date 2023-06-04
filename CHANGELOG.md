@@ -1,5 +1,12 @@
+## 3.1.0 (2023-06-04)
+
+* :sparkles: (auditCustom) include code optimizations for audit custom events ([9860d0a](https://github.com/ks-labs/adonis5-audit/commit/9860d0a))
+
+
+
 ## 3.0.0 (2023-06-02)
 
+* chore(release): 🔖 v3.0.0 ([1c36214](https://github.com/ks-labs/adonis5-audit/commit/1c36214))
 * :bug: fix(typing): refactor entire typing system and improved audit class manipulation ([009155f](https://github.com/ks-labs/adonis5-audit/commit/009155f))
 * :construction: wip(mixin): changed to new mixin strategy ([770e0c6](https://github.com/ks-labs/adonis5-audit/commit/770e0c6))
 * :pencil: (commits) add new commit and changelog generation for `cm` and `cma` command ([24e58e5](https://github.com/ks-labs/adonis5-audit/commit/24e58e5))
