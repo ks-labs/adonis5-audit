@@ -4,8 +4,8 @@ import buildCurrentContext from '../infra/buildCurrentContext'
 
 import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
 import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
-import createOrUpdateWithAudit from '../audit/createOrUpdateWithAudit'
-import deleteWithAudit from '../audit/deleteWithAudit'
+import auditCreateOrUpdate from '../Functional/auditCreateOrUpdate'
+import deleteWithAudit from '../Functional/deleteWithAudit'
 import { AuditEvents } from '../contracts/AuditEvents'
 
 export function Audit<T extends NormalizeConstructor<LucidModel>>(superclass: T) {
@@ -30,8 +30,7 @@ export function Audit<T extends NormalizeConstructor<LucidModel>>(superclass: T)
 
     /** @ts-ignore */
     public async delete(params?: { ctx: HttpContextContract }): Promise<void> {
-      const AuditType = (await global[Symbol.for('ioc.use')]('App/Models/Audit')) as LucidModel
-      const auditCtx = buildCurrentContext(this, arguments, AuditType)
+      const auditCtx = buildCurrentContext(this, arguments)
       if (auditCtx) {
         auditCtx.event = AuditEvents.DELETE
         return deleteWithAudit(this, auditCtx)
@@ -41,11 +40,9 @@ export function Audit<T extends NormalizeConstructor<LucidModel>>(superclass: T)
 
     /** @ts-ignore */
     public async save(params?: { ctx: HttpContextContract }): Promise<this> {
-      /** Load entity directly from the project app/models/Audit.ts allowing user customize class behavior  */
-      const AuditType = (await global[Symbol.for('ioc.use')]('App/Models/Audit')) as LucidModel
-      const auditCtx = buildCurrentContext(this, arguments, AuditType)
+      const auditCtx = buildCurrentContext(this, arguments)
       if (auditCtx) {
-        return createOrUpdateWithAudit(this, auditCtx)
+        return auditCreateOrUpdate(this, auditCtx)
       }
       await super.save()
       return this

@@ -28,5 +28,6 @@
 	"extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
 	"files": [
 		"./adonis-typings/index.ts",
+		"src/helpers/resolveAuditModel.ts",
 	]
 }

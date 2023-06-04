@@ -19,8 +19,8 @@ export default class AuditProvider {
   // IoC container is ready
   public async boot(): Promise<void> {
     this.app.container.bind('Adonis/Addons/AuditHelpers', () => {
-      const createAudit = require('../src/audit/createAudit')
-      return { createAudit }
+      const auditEvent = require('../src/audit/createAudit')
+      return { auditEvent }
     })
   }
   // App is ready

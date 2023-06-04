@@ -4,7 +4,7 @@ import isCreateAudit from '../helpers/isCreateAudit'
 import isUpdateAudit from '../helpers/isUpdateAudit'
 import saveWithAudit from './saveChangesWithAudit'
 
-export default function createOrUpdateWithAudit(that, auditCfg: AuditContext) {
+export default function auditCreateOrUpdate(that, auditCfg: AuditContext) {
   if (isCreateAudit(that)) {
     auditCfg.event = AuditEvents.CREATE
     return saveWithAudit(that, auditCfg)

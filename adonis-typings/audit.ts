@@ -42,5 +42,32 @@ declare module '@ioc:Adonis/Addons/AuditMixin' {
       }
     }
   }
-  export const Audit: AuditMixin
+  const Audit: AuditMixin
+
+  export type AuditData = {
+    /**
+     * HttpContext that will provide user and ip address to audit entry
+     *
+     * @type {HttpContextContract}
+     */
+    ctx?: HttpContextContract
+    /**
+     * Name of custom event to be saved
+     *
+     * @type {('create' | 'save'| 'update' | string)}
+     */
+    event: string
+    /**
+     * Name of entity being audited this can be used to retrieve entity using along auditable_id
+     *
+     * @type {(string | null)}
+     */
+    auditable?: string | null
+    auditable_id?: string | number | null
+    oldData?: string
+    newData?: string
+    data?: any
+  }
+  const auditCustom: (payload: AuditData) => Promise<any>
+  export { Audit, auditCustom }
 }

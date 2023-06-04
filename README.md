@@ -1,37 +1,66 @@
-## Table of contents
-
-- [🔖 Adonis5 Audit](#-adonis5-audit)
-  - [How to use](#how-to-use)
-  - [Template Files](#template-files)
-    - [Audit Migration File](#Audit-Migration-File)
-    - [Audit Model Example](#Audit-Model-Example)
-
 # 🔖 Adonis5 Audit
+[![test](https://github.com/ks-labs/adonis5-audit/actions/workflows/test.yml/badge.svg)](https://github.com/ks-labs/adonis5-audit/actions/workflows/test.yml)
 
 Audit lucid models with Adonisjs V5 easily with a Mixin !!
-Everthing your models need to do, are pass the context like `await currentMyModel.save({ ctx })`
+After setup, everthing you need its call your models as following:
 
-## How to use
-
-1. Install the package `npm i adonis5-audit`
-2. Copy migration file, add provider to your project [`node ace invoke adonis5-audit`](#Audit-Migration-File)
-3. Define your Audit model like repo sample [`./templates/Audit.txt`](#Audit-Model-Example)
-4. Add it on your models importing and using with the composition helper
-
-```ts
-// you need this to extend your models
-import { compose } from '@ioc:Adonis/Core/Helpers'
-//  AuditMixin - [[ Yes we have a simple mixin ]]
-//  createAudit - [[this could create custom audit entries]]
-import AuditMixin, { createAudit } from '@ioc:Adonis/Addons/AuditMixin'
-
-export default class MyAwesomeModel extends compose(BaseModel, AuditMixin ) {
-    // ... your custom implementation
+```js
+public async store(ctx: HttpContextContract) {
+  await currentMyModel.save({ ctx }) // need HttpContext for IP and auth.user
 }
 ```
 
-1. Audit your model from anywhere sending the HttpContext object !!
-   _(you could try use HttpContext.get() to get current request context (but i prefer pass explicitly))_
+## Table of contents
+
+- [🔖 Adonis5 Audit](#🔖-Adonis5-Audit)
+  - [Installation](#Installation)
+  - [How to Use](#how-to-use)
+    - [Auditing models](#Auditing-models)
+    - [Auditing Custom Events](#Auditing-Custom-Events)
+  - [Sample Files](#Sample-files)
+    - [Migration for Audit Table](#Migration)
+    - [Model for Audit Creation](#Model)
+  - [FAQ](#FAQ)
+    - [Why not use ALS inside plugin ?](#Why-not-use-ALS-inside-plugin-?)
+
+## Installation
+
+1. Install the package:
+
+   ```shell
+   npm i adonis5-audit
+   ```
+2. Copy [`migration`](#Audit-Migration-File) file and register provider to your project with adonis command:
+
+   ```shell
+   node ace invoke adonis5-audit
+   # or
+   node ace configure adonis5-audit
+   ```
+3. Define your `Audit` model as the repo sample [`./templates/Audit.txt`](#Model)
+   with Audit model you could embend some behavior that will be used during auditing operations.
+4. Add it on your models importing and using with the composition as below:
+
+```ts
+// app/Models/MyModel
+// you need this to extend your models
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { Audit } from '@ioc:Adonis/Addons/AuditMixin'
+import { compose } from '@ioc:Adonis/Core/Helpers'
+
+
+export default class MyModel extends compose(BaseModel, Audit) {
+    // ... your custom model awesome implementation
+}
+```
+
+## How to use
+
+Audit your model from anywhere sending the "ctx" object with `HttpContext` since ALS don't works properly inside the mixin (see the section [Why not use ALS inside plugin ?](#Why-not-use-ALS-inside-plugin-?))
+
+> You could use HttpContext.get() from ALS to get current request ctx and pass it explicitly to ensure that your request info its correctly
+
+### Auditing models
 
 ```ts
 export default class MyModelsController {
@@ -41,7 +70,8 @@ export default class MyModelsController {
     const currentMyModel = new MyModel()
     currentMyModel.cleanAndMerge(request.body()) // <= custom Code ehehe
 
-    await currentMyModel.save({ ctx }) // <= This will make an CREATE event entry on audits table since model was not saved before
+    await currentMyModel.save({ ctx })
+    // This will make an "create" audit since model was not saved before
     await currentMyModel.load('storehouse')
     return currentMyModel
   }
@@ -51,43 +81,45 @@ export default class MyModelsController {
     const currentMyModel = await MyModel.findOrFail(request.params().id)
     await currentMyModel.cleanAndMerge(request.body()) // <= custom Code ehehe
 
-    await currentMyModel.save({ ctx }) // <= This will make an UPDATE event entry on audits table
+    await currentMyModel.save({ ctx })
+    // This will make an "update" audit since Model allready Saved before save() call
     return currentMyModel
   }
 
   public async destroy(ctx: HttpContextContract) {
    const { request } = ctx // <= We need the ctx here because the lib use it to log IP Addresses, User and more !
    const myModelInstance = await MyModel.findOrFail(request.params().id)
-   await myModelInstance.delete({ ctx }) // <- this will make an DELETE event entry on audits table
+   await myModelInstance.delete({ ctx })
+   // this will make a "delete" audit when delete() call
    return myModelInstance
   }
 }
 ```
 
-## Oh we also have custom events support !!
+### Auditing Custom Events
 
 ```ts
-import { createAudit } from '@ioc:Adonis/Addons/AuditHelpers'
-// we recommend define your app custom events 
+import { auditCustom } from '@ioc:Adonis/Addons/AuditHelpers'
+// we recommend define your app custom events
 // in some centralized file as Enum
 // this will ensure dont have event name change
-import { CustomAuditEvents } from 'App/Types/AuditEvents' 
+import { CustomAuditEvents } from 'App/Types/AuditEvents'
 
 // the following code will create your custom event .toString()
-await createAudit({
-  auth: ctx.auth,
-  request,
-  event: 'CUSTOM_INTEGRATION', // this could be an String
-  auditable_id: manifest.id,
-  auditable: 'Manifest',
-  newData: customData.toJSON(),
-  auditType: Audit,
+
+
+await auditCustom({
+  ctx: httpContext, // current HttpContext to write user info
+  event: "event-name", // custom event name
+  auditable_id: 1, // audited entity id
+  auditable: 'Manifest', // audited entity name
+  data: vehicleTypeFound.toJSON(), // Object data to be audited at new_data field
 })
 ```
 
-## Template Files
+## Sample Files
 
-#### Audit Migration Example
+### Migration
 
 ```ts
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
@@ -133,7 +165,7 @@ export default class Audits extends BaseSchema {
 }
 ```
 
-#### Audit Model Example
+#### Model
 
 ```ts
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
@@ -188,3 +220,25 @@ export default class Audit extends BaseModel {
   public updatedAt: DateTime
 }
 ```
+
+## FAQ
+
+### Why not use ALS inside plugin ?
+
+Simple, it doesn't works with mixins !
+
+The idea its do the following:
+
+- Enable [`ALS (Async Local Storage)`](https://docs.adonisjs.com/guides/context#access-http-context-from-anywhere) with the config below, this will allow us get current context in request function call, with this the lib can get current `User`, `IP Address` and `Http Route` during audit.
+
+  ## Enabling ALS
+
+  To use ALS within your apps, you must enable it first inside the `/config/app.ts` file. Feel free to create the property manually if it doesn't exist.`/config/app.ts`:
+
+  ```ts
+  export const http: ServerConfig = {
+    useAsyncLocalStorage: true,
+  }
+  ```
+
+But it don't work with mixins since the `HttpContext.get()` by some reason lose the request reference making impossible return some context value. but yout still can use it from other app locations.

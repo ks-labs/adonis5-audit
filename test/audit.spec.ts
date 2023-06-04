@@ -24,7 +24,7 @@ test.group('Auto preload', (group) => {
     column = app.container.resolveBinding('Adonis/Lucid/Orm').column
     AuditMixin = app.container.resolveBinding('Adonis/Addons/AuditMixin').Audit
     app.container.bind('App/Models/Audit', async () => {
-      class AuditType extends BaseModel {
+      class CustomAudit extends BaseModel {
         public static table = 'audits'
         @column({ isPrimary: true })
         public id: number
@@ -63,7 +63,7 @@ test.group('Auto preload', (group) => {
         public newData: any
       }
 
-      return AuditType
+      return CustomAudit
     })
   })
 

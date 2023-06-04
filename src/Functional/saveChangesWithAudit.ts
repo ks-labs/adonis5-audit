@@ -38,7 +38,6 @@ export default async function (that, auditCfg: AuditContext) {
       ignoreDiff: that.$ignoreAuditFields,
       oldData,
       newData,
-      auditClass: auditCfg.auditClass,
     })
   }
   // save audit

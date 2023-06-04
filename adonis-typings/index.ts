@@ -1,2 +1,1 @@
-/// <reference path="./audit-helpers.ts" />
-/// <reference path="./mixin.ts" />
+/// <reference path="./audit.ts" />

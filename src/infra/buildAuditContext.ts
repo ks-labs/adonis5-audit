@@ -1,20 +1,18 @@
 import { get, isNil, isObjectLike } from 'lodash'
 import AuditContext from '../contracts/AuditContext'
-import Audit from '../contracts/IAudit'
 
-export default function (that, auditClass: Audit, argumentCfg: any): AuditContext | null {
-  const MODEL_WITH_AUDIT_DEFINITION = Object.getPrototypeOf(that).constructor.withAudit
+export default function (that, argumentCfg: any): AuditContext | null {
   const HTTP_CONTEXT_PARAM = get(argumentCfg, 'ctx', null)
   const WITH_AUDIT_PARAM = get(argumentCfg, 'audit', null)
   // @ts-ignore will audit when [has model with audit flag] or [http context object param] or [ .audit with value on lat param ]
-  let needAudit = WITH_AUDIT_PARAM || MODEL_WITH_AUDIT_DEFINITION || HTTP_CONTEXT_PARAM || false
+  let enableAudit = WITH_AUDIT_PARAM || HTTP_CONTEXT_PARAM || false
 
   if (isObjectLike(argumentCfg)) {
     if (!isNil(argumentCfg?.audit)) {
-      needAudit = argumentCfg?.audit
+      enableAudit = argumentCfg?.audit
     }
   }
-  if (needAudit) {
+  if (enableAudit) {
     // eslint-disable-next-line eqeqeq
     const HAS_ENV_AUDIT_LOG = get(process.env, 'AUDIT_LOG', null) == 'true'
     // eslint-disable-next-line eqeqeq
@@ -26,7 +24,6 @@ export default function (that, auditClass: Audit, argumentCfg: any): AuditContex
       event: get(argumentCfg, 'event', null),
       auditable: Object.getPrototypeOf(that).constructor.name,
       ctx: HTTP_CONTEXT_PARAM,
-      auditClass,
     }
   }
 
