@@ -2,7 +2,7 @@ import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { isNil } from 'lodash'
 import { RuntimeException } from 'node-exceptions'
 
-export default async function () {
+export default async function (): Promise<LucidModel | any> {
   const Audit = (await global[Symbol.for('ioc.use')]('App/Models/Audit')) as LucidModel
   if (isNil(Audit)) {
     throw new RuntimeException(
