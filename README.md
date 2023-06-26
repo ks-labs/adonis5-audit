@@ -242,3 +242,11 @@ The idea its do the following:
   ```
 
 But it don't work with mixins since the `HttpContext.get()` by some reason lose the request reference making impossible return some context value. but yout still can use it from other app locations.
+
+
+
+# How to commit in this repo ?
+
+> ✨ feat(mixin): implement new mixin behaviour
+
+This repo contain emojis for commits you can simply call `npm run cma` and it will stage everthing and ask for the emojis and description of commit.
