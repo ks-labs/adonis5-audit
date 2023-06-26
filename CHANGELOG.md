@@ -1,5 +1,12 @@
+## <small>3.1.1 (2023-06-26)</small>
+
+* :ambulance: (audit-model) fix error while load model during builded package ([c0da37e](https://github.com/ks-labs/adonis5-audit/commit/c0da37e))
+
+
+
 ## 3.1.0 (2023-06-04)
 
+* chore(release): 🔖 v3.1.0 ([55e4f90](https://github.com/ks-labs/adonis5-audit/commit/55e4f90))
 * :sparkles: (auditCustom) include code optimizations for audit custom events ([9860d0a](https://github.com/ks-labs/adonis5-audit/commit/9860d0a))
 
 

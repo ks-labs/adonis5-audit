@@ -1,6 +1,6 @@
 {
 	"name": "adonis5-audit",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"description": "Audit provider for AdonisJS 5",
 	"scripts": {
 		"mrm": "mrm --preset=@adonisjs/mrm-preset",
