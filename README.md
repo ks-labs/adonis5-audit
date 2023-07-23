@@ -99,7 +99,7 @@ export default class MyModelsController {
 ### Auditing Custom Events
 
 ```ts
-import { auditCustom } from '@ioc:Adonis/Addons/AuditHelpers'
+import { auditCustom } from '@ioc:Adonis/Addons/AuditMixin'
 // we recommend define your app custom events
 // in some centralized file as Enum
 // this will ensure dont have event name change
