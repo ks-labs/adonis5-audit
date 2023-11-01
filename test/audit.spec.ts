@@ -99,7 +99,7 @@ test.group('Auto preload', (group) => {
     const userCreated = new User()
     userCreated.merge({ name: 'Nome', email: 'test' })
     /** @ts-ignore */
-    await userCreated.save({
+    let user = await userCreated.save({
       ctx: {
         auth: {
           user: { id: 1 },
@@ -121,6 +121,30 @@ test.group('Auto preload', (group) => {
     expect(auditRows.rows[0].userId).toBe(1)
     expect(auditRows.rows[0].newData).toBe('{"name":"Nome","email":"test","id":1}')
 
+    /** ---------------------------------- UPDATE AUDITION -------------------------------- */
+    user.merge({ name: 'Ks Gestão' })
+    /** @ts-ignore */
+    await user.save({
+      ctx: {
+        auth: {
+          user: { id: 1 },
+        },
+        request: {
+          url: () => '/api/v1/test',
+          ip: () => '127.0.0.1',
+        },
+      },
+    })
+    expect(user.$isPersisted).toBe(true)
+    AuditImpl = await app.container.resolveBinding('App/Models/Audit')
+    /** @ts-ignore */
+    const auditRowsUpdate = await AuditImpl.query().paginate(1, 100)
+    expect(auditRowsUpdate.rows).toHaveLength(2)
+    expect(auditRowsUpdate.rows[1]).not.toBeNull()
+    // Always when has an creation event oldData must be null
+    expect(auditRowsUpdate.rows[1].oldData).not.toBe(null)
+    expect(auditRowsUpdate.rows[1].userId).toBe(1)
+    expect(auditRowsUpdate.rows[1].newData).toBe('{"name":"Ks Gestão"}')
     /** ---------------------------------- DELETE AUDITION -------------------------------- */
     /** @ts-ignore */
     await userCreated.delete({
@@ -135,12 +159,12 @@ test.group('Auto preload', (group) => {
       },
     })
     const auditsRowsDel = await AuditImpl.query().paginate(1, 100)
-    expect(auditsRowsDel.rows).toHaveLength(2)
-    expect(auditsRowsDel.rows[1]).not.toBeNull()
-    expect(auditsRowsDel.rows[1].oldData).toBe('{"name":"Nome","email":"test","id":1}')
-    expect(auditsRowsDel.rows[1].userId).toBe(2)
+    expect(auditsRowsDel.rows).toHaveLength(3)
+    expect(auditsRowsDel.rows[2]).not.toBeNull()
+    expect(auditsRowsDel.rows[2].oldData).toBe('{"name":"Ks Gestão","email":"test","id":1}')
+    expect(auditsRowsDel.rows[2].userId).toBe(2)
     // when deleted new data must be null
-    expect(auditsRowsDel.rows[1].newData).toBe(null)
+    expect(auditsRowsDel.rows[2].newData).toBe(null)
   })
 
   test('model extending from a custom base model and AuditMixin should have $ignoreAuditFields property empty', async ({
