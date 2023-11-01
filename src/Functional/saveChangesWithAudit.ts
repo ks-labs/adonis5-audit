@@ -5,10 +5,12 @@ import createAudit from './createAudit'
 import doLogging from '../infra/doLogging'
 import { only } from '../helpers/only'
 import AuditContext from '../contracts/AuditContext'
+import { differenceObj } from '../helpers/getDifference'
 
 export default async function (that, auditCfg: AuditContext) {
-  let newData: any = clone(omit(that.$attributes))
-  let oldData: any = clone(omit(that.$original))
+  let changeData = differenceObj(clone(omit(that.$original)), clone(omit(that.$attributes)))
+  let newData: any = changeData.newData
+  let oldData: any = changeData.oldData
 
   // if new and old are equal then don't bother updating
   const hasChanges = !isEqual(
