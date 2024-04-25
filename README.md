@@ -131,14 +131,9 @@ export default class Audits extends BaseSchema {
       table.increments('id')
 
       // User id from ctx auth obj
-      table
-        .integer('user_id')
-        .unsigned()
-        .nullable()
-        .defaultTo(null)
-        .references('id')
-        .inTable('users')
-        .onDelete('SET NULL')
+      table.integer('user_id').unsigned().nullable()
+      // User Model Name
+      table.string('user_entity_name').defaultTo('users')
       // Entity Id
       table.string('auditable_id').nullable()
       // Entity Name

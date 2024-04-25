@@ -15,14 +15,9 @@ export async function createAuditsTable(Database: DatabaseContract) {
   await Database.connection().schema.createTable('audits', (table) => {
     table.increments('id')
     // User id from Auth in ctx
-    table
-      .integer('user_id')
-      .unsigned()
-      .nullable()
-      .defaultTo(null)
-      .references('id')
-      .inTable('users')
-      .onDelete('SET NULL')
+    table.integer('user_id').unsigned().notNullable()
+    // User id from Auth in ctx
+    table.string('user_entity_name').defaultTo('users')
     // Entity Id
     table.string('auditable_id').nullable()
     // Entity Name

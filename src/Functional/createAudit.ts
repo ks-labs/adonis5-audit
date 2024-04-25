@@ -1,6 +1,7 @@
 import { get, isNil, omit } from 'lodash'
 import { RuntimeException } from 'node-exceptions'
 import resolveAuditModel from '../helpers/resolveAuditModel'
+import getUserEntityName from '../helpers/getUserEntityName'
 
 /**
  * Run the audit
@@ -34,12 +35,17 @@ export default async function ({
     ip = request?.ip() ?? null
   }
 
+  // Pluralize and snackCase user entityName
+
+  console.error('=====', getUserEntityName(auth.user))
+
   // get user data to store
   const userId = get(auth, 'user.id', null)
   // save audit
   // @ts-ignore
   return await auditClass.create({
     userId,
+    userEntityName: getUserEntityName(auth.user),
     auditableId: auditable_id,
     auditable,
     event,
