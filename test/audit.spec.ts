@@ -34,6 +34,9 @@ test.group('Auto preload', (group) => {
         @column()
         public userId: number | null = null
 
+        @column()
+        public userEntityName: string
+
         /** Entity Id */
         @column()
         public auditableId: string | null
