@@ -52,6 +52,9 @@ export default class Audit extends BaseModel {
 	/** User Id */
 
 	@column()
+	public userEntityName: string
+
+	@column()
 	public userId: number | null = null
 
 	/** Entity Id */

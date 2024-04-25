@@ -35,10 +35,6 @@ export default async function ({
     ip = request?.ip() ?? null
   }
 
-  // Pluralize and snackCase user entityName
-
-  console.error('=====', getUserEntityName(auth.user))
-
   // get user data to store
   const userId = get(auth, 'user.id', null)
   // save audit
