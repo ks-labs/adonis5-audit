@@ -1,6 +1,6 @@
 {
 	"name": "adonis5-audit",
-	"version": "3.1.1",
+	"version": "4.0.0",
 	"description": "Audit provider for AdonisJS 5",
 	"scripts": {
 		"mrm": "mrm --preset=@adonisjs/mrm-preset",
@@ -97,10 +97,12 @@
 	},
 	"dependencies": {
 		"@types/lodash": "^4.14.191",
+		"change-case": "^4.1.2",
 		"debug": "^4.3.4",
 		"lodash": "^4.17.21",
 		"luxon": "^3.2.1",
-		"node-exceptions": "^4.0.1"
+		"node-exceptions": "^4.0.1",
+		"pluralize": "^8.0.0"
 	},
 	"peerDependencies": {
 		"@adonisjs/events": "^7.1.2"
@@ -124,6 +126,7 @@
 		"@release-it/bumper": "^4.0.0",
 		"@types/debug": "^4.1.7",
 		"@types/node": "^14.18.36",
+		"@types/pluralize": "^0.0.33",
 		"@types/ramda": "^0.27.62",
 		"adonis-provider-tester": "^1.2.0",
 		"chai": "^4.3.4",
